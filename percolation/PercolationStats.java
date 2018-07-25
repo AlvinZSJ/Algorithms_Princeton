@@ -10,7 +10,8 @@
  *  of a n-by-n lattice. The input parameters are "n" and "trials",
  *  which set the size of lattice and the number of tests
  *
- *  Date: 2018-07-13 23:33:54     Author: ZHAnG Shenjia
+ *  Author: AlvinZSJ
+ *  Date: 2018-07-13 23:33:54
  ******************************************************************************/
 
 
@@ -21,13 +22,23 @@ public class PercolationStats {
 
     private static final double CONFIDENCE_95 = 1.96;
 
-    // T times test
-    private int t;
-
     // array of threshold for each test
-    private double[] threshold;
+    private final double[] threshold;
 
-    // perform trials independent experiments on an n-by-n grid
+    // T times test
+    private final int t;
+
+    /* stddev and mean value of threshold,
+    *  which are used to reduce the calculation
+    */
+    private final double stddevThreshold;
+    private final double meanThreshold;
+
+    /**
+     * Perform trials independent experiments on an n-by-n grid
+     * @param n size of grids
+     * @param trials times of trials
+     */
     public PercolationStats(int n, int trials) {
 
         if (n <= 0)
@@ -63,40 +74,56 @@ public class PercolationStats {
             threshold[i] = (double) openCount / (n * n);
             openCount = 0;
         }
+
+        stddevThreshold = StdStats.stddev(threshold);
+        meanThreshold = StdStats.mean(threshold);
     }
 
-    // sample mean of percolation threshold
+    /**
+     * @return sample mean of percolation threshold
+     */
     public double mean() {
-        return StdStats.mean(threshold);
+        return meanThreshold;
     }
 
-    // sample standard deviation of percolation threshold
+    /**
+     * @return sample standard deviation of percolation threshold
+     */
     public double stddev() {
-        return StdStats.stddev(threshold);
+        return stddevThreshold;
     }
 
-    // partial interval
+    /**
+     * @return partial interval
+     */
     private double partialInterval() {
-        return CONFIDENCE_95 * stddev() / (Math.sqrt(t));
+        return CONFIDENCE_95 * stddevThreshold / (Math.sqrt(t));
     }
 
-    // low  endpoint of 95% confidence interval
+    /**
+     * @return low endpoint of 95% confidence interval
+     */
     public double confidenceLo() {
-        return mean() - partialInterval();
+        return meanThreshold - partialInterval();
     }
 
-    // high endpoint of 95% confidence interval
+    /**
+     * @return high endpoint of 95% confidence interval
+     */
     public double confidenceHi() {
-        return mean() + partialInterval();
+        return meanThreshold + partialInterval();
     }
 
-    // test client (described below)
+    /**
+     * test client (described below)
+     * @param args times of trials and grids to open
+     */
     public static void main(String[] args) {
         PercolationStats lattice = new PercolationStats(Integer.parseInt(args[0]),
                                                         Integer.parseInt(args[1]));
 
-        System.out.printf("mean:        %f\n", lattice.mean());
-        System.out.printf("stddev:      %f\n", lattice.stddev());
+        System.out.printf("mean:        %f\n", lattice.meanThreshold);
+        System.out.printf("stddev:      %f\n", lattice.stddevThreshold);
         System.out.printf("95%% confidence interval: [%f,%f]\n",
                           lattice.confidenceLo(),
                           lattice.confidenceHi());
