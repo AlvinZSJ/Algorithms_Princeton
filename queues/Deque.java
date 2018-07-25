@@ -73,6 +73,8 @@ public class Deque<Item> implements Iterable<Item> {
         first.item = item;
         first.prev = null;
 
+        // link the new first node
+        // both next and prev should be specified
         if (isEmpty()) {
             first.next = null;
             last = first;
@@ -100,6 +102,8 @@ public class Deque<Item> implements Iterable<Item> {
         last.item = item;
         last.next = null;
 
+        // link the new last node
+        // both next and prev should be specified
         if (isEmpty()) {
             last.prev = null;
             first = last;
