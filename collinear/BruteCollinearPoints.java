@@ -1,6 +1,6 @@
 /*************************************************************************
  *  Compilation:  javac BruteCollinearPoints.java
- *  Execution:    javac BruteCollinearPoints.java input.txt
+ *  Execution:    java BruteCollinearPoints input.txt
  *  Dependencies: edu.princeton.cs.algs4.StdDraw
  *                edu.princeton.cs.algs4.In
  *                edu.princeton.cs.algs4.StdOut

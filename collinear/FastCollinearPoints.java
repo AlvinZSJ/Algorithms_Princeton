@@ -1,6 +1,6 @@
 /*************************************************************************
  *  Compilation:  javac FastCollinearPoints.java
- *  Execution:    javac FastCollinearPoints.java input.txt
+ *  Execution:    java FastCollinearPoints input.txt
  *  Dependencies: edu.princeton.cs.algs4.StdDraw
  *                edu.princeton.cs.algs4.In
  *                edu.princeton.cs.algs4.StdOut
